@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HelperHub | Local Helpers</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root{
+  --bg: #fffaf3;       /* warm cream */
+  --card: #fff6e9;     /* soft card */
+  --accent: #f59e0b;   /* saffron */
+  --accent-dark: #c2410c; /* deep orange */
+  --text: #42342b;     /* dark brown */
+  --muted: #8b6f61;
+}
+
+body{
+  background: linear-gradient(180deg,var(--bg),#fff4e6);
+  color:var(--text);
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+}
+
+/* Navbar */
+.navbar{
+  background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+  box-shadow:0 8px 30px rgba(196,65,12,0.12);
+  transition: box-shadow 220ms ease, padding 180ms ease, backdrop-filter 220ms ease;
+  padding:0.95rem 0;
+}
+/* scrolled state (applies after small scroll) */
+.navbar.scrolled{
+  box-shadow:0 26px 70px rgba(66,52,43,0.18);
+  backdrop-filter: blur(6px) saturate(120%);
+  padding:0.6rem 0;
+  background: linear-gradient(90deg, rgba(194,65,12,0.98), rgba(160,50,10,0.92));
+  border-bottom: 3px solid rgba(245,158,11,0.12);
+} 
+.navbar .navbar-brand{ display:inline-flex; align-items:center; gap:0.55rem }
+.navbar-brand .brand-text{ font-weight:700; color:#fff }
+.brand-logo{ height:38px; width:auto; display:block }
+.navbar-brand, .nav-link{
+  color:#fff !important;
+  font-weight:600;
+}
+
+/* animated gradient sweep */
+.navbar::before{
+  content:''; position:absolute; left:0; right:0; top:0; height:4px; border-radius:0 0 6px 6px; pointer-events:none; opacity:0; transform:translateY(-6px); transition:opacity 280ms ease, transform 280ms ease;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(245,158,11,0.28), rgba(255,255,255,0.06));
+  background-size: 200% 100%;
+}
+.navbar.scrolled::before{ opacity:1; transform:translateY(0); animation:navSweep 3s linear infinite; }
+@keyframes navSweep{ from { background-position: 0% 50% } to { background-position: 100% 50% } }
+
+/* Link underline animation */
+.nav-link{ position:relative; overflow:visible; }
+.nav-link::after{
+  content:''; position:absolute; left:50%; bottom:-6px; transform:translateX(-50%); width:0; height:3px; border-radius:4px; background:linear-gradient(90deg, rgba(245,158,11,0.95), rgba(194,65,12,0.95)); transition:width 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease; opacity:0;
+}
+.nav-link:hover::after, .nav-link:focus::after{ width:60%; opacity:1 }
+
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .navbar::before, .navbar.scrolled::before{ animation:none !important; }
+  @keyframes navSweep{ from { background-position: 50% 50% } to { background-position: 50% 50% } }
+}
+
+/* Ask Me animated button (Bootstrap-friendly) */
+.btn-ask{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.12);
+  padding:6px 12px;
+  border-radius:10px;
+  font-weight:600;
+  transition:background 0.18s ease, transform 0.12s ease;
+  position:relative; overflow:visible;
+}
+.btn-ask::after{
+  content:''; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(1); width:220%; height:220%; border-radius:14px; pointer-events:none; opacity:0; background: radial-gradient(circle at 30% 20%, rgba(245,158,11,0.12), transparent 35%);
+  transition:opacity 220ms ease, transform 320ms ease;
+}
+.btn-ask.anim-glow::after{ opacity:1; animation:askGlow 2.6s infinite; }
+@keyframes askGlow{ 0%{ transform:translate(-50%,-50%) scale(0.96); opacity:0.7 } 50%{ transform:translate(-50%,-50%) scale(1.04); opacity:1 } 100%{ transform:translate(-50%,-50%) scale(0.96); opacity:0.7 } }
+.btn-ask .bi{ transition:transform 180ms ease; }
+.btn-ask:hover{ background:rgba(255,255,255,0.14); transform:translateY(-2px); }
+.btn-ask:hover .bi{ transform:translateY(-2px) rotate(-12deg); }
+/* Respect reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .btn-ask.anim-glow::after{ animation:none !important; opacity:0 !important; }
+  .navbar{ transition:none !important; }
+}
+
+
+/* Hero */
+.hero{
+  background: linear-gradient(135deg, rgba(245,158,11,0.95), rgba(194,65,12,0.9));
+  color:white;
+  border-radius:18px;
+  box-shadow:0 18px 50px rgba(196,65,12,0.12);
+}
+.hero h1{font-weight:700; letter-spacing:0.2px}
+.hero p{opacity:0.95}
+
+/* Search */
+#search{
+  border-radius:14px;
+  border:1px solid rgba(66,52,43,0.06);
+  box-shadow:0 6px 18px rgba(66,52,43,0.04) inset;
+  transition: box-shadow 0.18s ease, transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+#search:hover{
+  box-shadow:0 12px 30px rgba(66,52,43,0.08);
+  transform:translateY(-2px);
+  border-color:rgba(194,65,12,0.12);
+}
+#search:focus{
+  outline:none;
+  background:#fff;
+  border-color:var(--accent);
+  box-shadow:0 14px 40px rgba(194,65,12,0.12);
+}
+#search::placeholder{color:var(--muted)}
+
+/* Cards */
+.card{
+  position:relative;
+  overflow:visible;
+  border:none;
+  border-radius:14px;
+  background:var(--card);
+  box-shadow:0 10px 30px rgba(194,65,12,0.06);
+  transition:transform 0.25s ease, box-shadow 0.25s ease, border-color 0.18s ease, color 0.15s ease;
+}
+.card::after{
+  content:''; position:absolute; left:12px; right:12px; top:12px; height:3px; border-radius:6px; background:linear-gradient(90deg,var(--accent),var(--accent-dark)); transform-origin:left center; transform:scaleX(0); opacity:0; transition:transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease;
+}
+.card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 30px 90px rgba(194,65,12,0.18), 0 10px 30px rgba(245,158,11,0.06);
+  border:1px solid rgba(245,158,11,0.14);
+}
+.card:hover::after{ transform:scaleX(1); opacity:1 }
+.helper .card h5{font-weight:600; color:var(--text); transition: color 160ms ease, transform 120ms ease}
+.card:hover h5{ color:var(--accent-dark); transform:translateY(-4px) }
+.helper .card p{color:var(--muted)}
+.rating{
+  color:var(--accent);
+  font-weight:600;
+} 
+.badge-accent{
+  background:rgba(245,158,11,0.12);
+  color:var(--accent-dark);
+  padding:6px 10px; border-radius:12px; font-weight:600; font-size:0.85rem;
+}
+
+/* Ask Me button */
+.btn-ask{
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.12);
+  padding:6px 12px;
+  border-radius:10px;
+  font-weight:600;
+  transition:background 0.18s ease, transform 0.12s ease;
+}
+.btn-ask:hover{ background:rgba(255,255,255,0.14); transform:translateY(-2px); }
+
+/* Modal (puri themed) */
+#contactModal .modal-content{ background:var(--card); border-radius:12px; border:none; box-shadow:0 20px 50px rgba(66,52,43,0.08); color:var(--text); }
+#contactModal .modal-title{ color:var(--accent-dark); font-weight:700; }
+#contactModal .form-control{ border-radius:10px; border:1px solid rgba(245,158,11,0.14); background:linear-gradient(180deg, rgba(245,158,11,0.03), transparent); color:var(--text); transition:box-shadow 0.16s ease, border-color 0.12s ease, transform 0.08s ease, background 0.12s ease; caret-color:var(--accent-dark); }
+#contactModal .form-control::placeholder{ color: rgba(194,65,12,0.56); font-weight:500 }
+#contactModal .form-control:hover{ border-color: rgba(245,158,11,0.2); box-shadow:0 8px 18px rgba(245,158,11,0.06); }
+#contactModal .form-control:focus{ outline:none; border-color:var(--accent); background:#fff; box-shadow:0 18px 40px rgba(245,158,11,0.14); }
+#contactModal .btn-primary{ background:var(--accent); border:none }
+#contactModal .btn-outline-secondary{ border-radius:10px }
+
+/* Footer */
+footer{
+  position:relative; overflow:hidden;
+  background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+  color:#fff; padding:3.25rem 1rem; border-top:none;
+}
+footer .footer-wave{ position:absolute; left:0; right:0; top:-32px; height:84px; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); transform:skewY(-4deg); opacity:0; transition:opacity 420ms ease, transform 420ms ease; }
+footer.revealed .footer-wave{ opacity:0.95; transform:skewY(0deg); }
+
+.footer-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:24px; align-items:start; max-width:1100px; margin:0 auto; }
+.footer-col h6{ color:#fff; font-weight:700; margin-bottom:8px }
+.footer-col p, .footer-col a, .footer-note{ color:rgba(255,255,255,0.92); }
+.footer-link{ color:rgba(255,255,255,0.95); font-weight:600; text-decoration:none; transition:opacity 180ms ease, transform 160ms ease; }
+.footer-link:hover{ opacity:0.95; transform:translateY(-3px); }
+
+.subscribe{ display:flex; gap:8px; align-items:center }
+.subscribe input{ flex:1; padding:10px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.03); color:#fff }
+.subscribe button{ padding:10px 14px; border-radius:999px; border:none; background:rgba(255,255,255,0.12); color:#fff; font-weight:600 }
+.subscribe button.pulse{ animation:subPulse 900ms ease; box-shadow:0 10px 30px rgba(255,255,255,0.12); }
+@keyframes subPulse{ 0%{ transform:translateY(0); } 50%{ transform:translateY(-6px) scale(1.03); } 100%{ transform:translateY(0); } }
+
+.social-icons a{ color:rgba(255,255,255,0.9); font-size:1.1rem; transition:transform 160ms ease, color 160ms ease; margin-right:8px; display:inline-block; }
+.social-icons a:hover{ transform:translateY(-4px); color:var(--card); }
+.footer-note{ opacity:0.95; font-size:0.92rem; margin-top:12px }
+
+/* reveal animations */
+.footer-col{ opacity:0; transform:translateY(10px); transition:opacity 420ms ease, transform 420ms ease; }
+footer.revealed .footer-col{ opacity:1; transform:translateY(0); }
+footer.revealed .footer-col:nth-child(1){ transition-delay:120ms }
+footer.revealed .footer-col:nth-child(2){ transition-delay:240ms }
+footer.revealed .footer-col:nth-child(3){ transition-delay:360ms }
+footer.revealed .footer-col:nth-child(4){ transition-delay:480ms }
+
+@media (max-width:900px){ .footer-grid{ grid-template-columns:1fr; text-align:center } .subscribe{ justify-content:center } }
+@media (prefers-reduced-motion: reduce){ .footer-wave, .footer-col, .social-icons a{ transition:none !important; } }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/helperhub-logo-wrench-wiper.svg" type="image/svg+xml">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="assets/helperhub-logo-wrench-wiper.svg" alt="HelperHub" class="brand-logo">
+      <span class="brand-text">HelperHub</span>
+    </a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#helpers">Helpers</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <a class="btn btn-ask ms-3" href="ai.html" target="_blank" rel="noopener noreferrer"><i class="bi bi-question-circle-fill me-1"></i>Ask Me</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+<!-- HERO -->
+<div class="hero p-5 text-center mb-4">
+  <h1>Find Trusted Local Helpers</h1>
+  <p class="mt-2">Maids • AC Repair • Plumber • Electrician</p>
+</div>
+
+<!-- SEARCH -->
+<input type="text" id="search" class="form-control form-control-lg mb-4"
+placeholder="Search helper (maid, plumber, ac, electrician)" onkeyup="searchHelper()">
+
+<!-- HELPERS -->
+<div class="row" id="helpers">
+
+  <!-- Plumber -->
+  <div class="col-md-3 mb-4 helper" data-name="plumber">
+    <div class="card p-3 text-center">
+      <h5>Ali Khan</h5>
+      <p>🔧 Plumber</p>
+      <p class="rating">⭐⭐⭐⭐☆</p>
+      <p>Available: 10AM – 6PM</p>
+    </div>
+  </div>
+
+  <!-- AC Repair -->
+  <div class="col-md-3 mb-4 helper" data-name="ac">
+    <div class="card p-3 text-center">
+      <h5>Usman Sheikh</h5>
+      <p>❄️ AC Repair</p>
+      <p class="rating">⭐⭐⭐⭐⭐</p>
+      <p>Available: 12PM – 8PM</p>
+    </div>
+  </div>
+
+  <!-- Maid -->
+  <div class="col-md-3 mb-4 helper" data-name="maid">
+    <div class="card p-3 text-center">
+      <h5>Fatima Bibi</h5>
+      <p>🧹 Maid</p>
+      <p class="rating">⭐⭐⭐⭐☆</p>
+      <p>Available: 8AM – 4PM</p>
+    </div>
+  </div>
+
+  <!-- Electrician -->
+  <div class="col-md-3 mb-4 helper" data-name="electrician">
+    <div class="card p-3 text-center">
+      <h5>Ahmed Raza</h5>
+      <p>💡 Electrician</p>
+      <p class="rating">⭐⭐⭐⭐⭐</p>
+      <p>Available: 11AM – 7PM</p>
+    </div>
+  </div>
+  <div class="col-md-3 mb-4 helper" data-name="plumber">
+  <div class="card p-3 text-center">
+    <h5>Bilal Ahmed</h5>
+    <p>🔧 Plumber</p>
+    <p class="rating">⭐⭐⭐⭐⭐</p>
+    <p>Available: 9AM – 5PM</p>
+  </div>
+</div>
+<div class="col-md-3 mb-4 helper" data-name="maid">
+  <div class="card p-3 text-center">
+    <h5>Ayesha Noor</h5>
+    <p>🧹 Maid</p>
+    <p class="rating">⭐⭐⭐⭐⭐</p>
+    <p>Available: 7AM – 3PM</p>
+  </div>
+</div>
+
+<div class="col-md-3 mb-4 helper" data-name="plumber">
+  <div class="card p-3 text-center">
+    <h5>Imran Shah</h5>
+    <p>🔧 Plumber</p>
+    <p class="rating">⭐⭐⭐⭐☆</p>
+    <p>Available: 1PM – 9PM</p>
+  </div>
+</div>
+<div class="col-md-3 mb-4 helper" data-name="ac">
+  <div class="card p-3 text-center">
+    <h5>Sara Khan</h5>
+    <p>❄️ AC Repair</p>
+    <p class="rating">⭐⭐⭐⭐⭐</p>
+    <p>Available: 10AM – 6PM</p>
+  </div>
+ 
+</div>
+</div>
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Contact Helper</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2"><small class="muted">Service</small><div id="modalService" class="fw-600">—</div></div>
+        <div class="mb-3">
+          <label class="form-label">Your name</label>
+          <input class="form-control" id="modalName" placeholder="e.g., Ali Khan">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea class="form-control" id="modalMessage" rows="3" placeholder="Write a message..."></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Proposed price</label>
+          <input type="number" class="form-control" id="modalPrice" placeholder="e.g., 500">
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="modalSend">Send request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="contact" class="mt-5 text-center">
+  <div class="footer-wave" aria-hidden="true"></div>
+  <div class="container footer-grid py-4">
+
+    <div class="footer-col">
+      <h6>HelperHub</h6>
+      <p class="mb-2">Connecting people with trusted local helpers across your city. Fast, verified, and affordable.</p>
+      <div class="social-icons mb-2">
+        <a href="#" aria-label="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="twitter"><i class="bi bi-twitter"></i></a>
+      </div>
+      <small class="footer-note d-block">© 2026 HelperHub — Made with ❤️</small>
+    </div>
+
+    <div class="footer-col">
+      <h6>Contact</h6>
+      <p class="mb-1"><i class="bi bi-envelope-fill me-2"></i><a class="footer-link" href="mailto:contact@helperhub.com">contact@helperhub.com</a></p>
+      <p class="mb-1"><i class="bi bi-telephone-fill me-2"></i><a class="footer-link" href="tel:+923001234567">+92 300 1234567</a></p>
+      <p class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>123 Market Rd, Lahore</p>
+    </div>
+
+    <div class="footer-col">
+      <h6>Hours</h6>
+      <p class="mb-1">Mon – Fri: 9:00 AM – 7:00 PM</p>
+      <p class="mb-1">Sat: 10:00 AM – 4:00 PM</p>
+      <p class="mb-0">Sun: Closed</p>
+    </div>
+
+    <div class="footer-col">
+      <h6>Quick Links</h6>
+      <p class="mb-2"><a class="footer-link d-block" href="#helpers">Find Helpers</a><a class="footer-link d-block" href="#contact">Contact Us</a><a class="footer-link d-block" href="#">Privacy</a></p>
+
+      <h6 class="mt-2">Subscribe</h6>
+      <form class="subscribe" onsubmit="event.preventDefault(); alert('Thanks — subscription saved (placeholder)');">
+        <input type="email" required placeholder="you@domain.com" aria-label="email">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </div>
+
+  </div>
+</footer>  
+
+<!-- JS -->
+<script>
+function searchHelper(){
+  let input = document.getElementById("search").value.toLowerCase();
+  let helpers = document.getElementsByClassName("helper");
+
+  for(let h of helpers){
+    let name = h.getAttribute("data-name");
+    h.style.display = name.includes(input) ? "block" : "none";
+  }
+}
+
+// Modal behaviour: open on card click and populate fields
+document.querySelectorAll('.helper').forEach(h => {
+  h.addEventListener('click', () => {
+    const helperName = h.querySelector('h5') ? h.querySelector('h5').textContent : '';
+    const service = h.getAttribute('data-name') || '';
+    const displayService = helperName + (service ? ' — ' + service.charAt(0).toUpperCase() + service.slice(1) : '');
+
+    document.getElementById('modalService').textContent = displayService;
+    document.getElementById('modalName').value = '';
+    document.getElementById('modalMessage').value = '';
+    document.getElementById('modalPrice').value = '';
+
+    const modalEl = document.getElementById('contactModal');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+  });
+});
+
+// Handle send action (placeholder behaviour)
+document.getElementById('modalSend').addEventListener('click', () => {
+  const name = document.getElementById('modalName').value.trim();
+  const message = document.getElementById('modalMessage').value.trim();
+  const price = document.getElementById('modalPrice').value.trim();
+
+  if(!name || !message){
+    alert('Please enter your name and a message.');
+    return;
+  }
+
+  const serviceText = document.getElementById('modalService').textContent;
+  // Close modal
+  const modalEl = document.getElementById('contactModal');
+  const bsModal = bootstrap.Modal.getInstance(modalEl);
+  if(bsModal) bsModal.hide();
+
+  // Feedback (replace with real submit logic)
+  setTimeout(() => {
+    alert('Request sent to ' + serviceText + '\nName: ' + name + '\nPrice: ' + (price || 'n/a'));
+  }, 300);
+});
+
+// Navbar scroll & Ask Me animation
+(function(){
+  const nav = document.querySelector('.navbar');
+  const ask = document.querySelector('.btn-ask');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!nav) return;
+
+  const updateNav = () => {
+    // lower threshold so small scrolling shows effect; use pageYOffset for compatibility
+    const y = window.scrollY || window.pageYOffset || 0;
+    if(y > 8) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  };
+
+  window.addEventListener('scroll', updateNav, {passive:true});
+  window.addEventListener('resize', updateNav);
+  // Run once after load and again shortly after to account for late layout shifts
+  document.addEventListener('DOMContentLoaded', updateNav);
+  setTimeout(updateNav, 300);
+
+  // subtle periodic glow on Ask Me button (stops after a few seconds)
+  if(ask && !prefersReduced){
+    setTimeout(()=> ask.classList.add('anim-glow'), 700);
+    setTimeout(()=> ask.classList.remove('anim-glow'), 14000);
+  }
+})();
+
+// Footer reveal: reveal animated footer when it enters the viewport
+(function(){
+  const footer = document.querySelector('footer#contact');
+  if(!footer) return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        footer.classList.add('revealed');
+        if(!prefersReduced){
+          const cols = footer.querySelectorAll('.footer-col');
+          cols.forEach((c,i)=> setTimeout(()=> c.classList.add('revealed-col'), i*120));
+          const icons = footer.querySelectorAll('.social-icons a');
+          icons.forEach((a,i)=> setTimeout(()=> a.classList.add('popped'), 400 + i*120));
+          const subBtn = footer.querySelector('.subscribe button');
+          if(subBtn) { setTimeout(()=> subBtn.classList.add('pulse'), 900); setTimeout(()=> subBtn.classList.remove('pulse'), 3000); }
+        }
+      } else {
+        footer.classList.remove('revealed');
+        footer.querySelectorAll('.footer-col').forEach(c=> c.classList.remove('revealed-col'));
+        footer.querySelectorAll('.social-icons a').forEach(a=> a.classList.remove('popped'));
+      }
+    });
+  }, {threshold:0.12});
+
+  io.observe(footer);
+})();
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

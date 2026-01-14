@@ -1,0 +1,176 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:400,600');
+body {
+	margin: 0;
+	background: #0f172a;
+	font-family: 'Work Sans', sans-serif;
+	font-weight: 800;
+}
+
+.container {
+	width: 80%;
+	margin: 0 auto;
+}
+
+header {
+  background: linear-gradient(90deg, #06b6d4, #0891b2);
+}
+
+header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.logo {
+  float: left;
+  padding: 10px 0;
+}
+
+nav {
+  float: right;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin-left: 70px;
+  padding-top: 23px;
+
+  position: relative;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #fbbf24;
+}
+
+nav a::before {
+  content: '';
+  display: block;
+  height: 5px;
+  background-color: #fbbf24;
+
+  position: absolute;
+  top: 0;
+  width: 0%;
+
+  transition: all ease-in-out 250ms;
+}
+
+nav a:hover::before {
+  width: 100%;
+}
+
+
+.hero {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: white;
+  border-radius: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(194,65,12,0.06);
+  transition: transform 0.3s, box-shadow 0.25s ease, border-color 0.18s ease;
+  position:relative; overflow:visible;
+}
+.card::after{ content:''; position:absolute; left:12px; right:12px; top:12px; height:4px; border-radius:8px; background:linear-gradient(90deg,#f59e0b,#c2410c); transform:scaleX(0); transform-origin:left center; transition:transform 220ms cubic-bezier(.2,.9,.2,1), opacity 160ms ease; opacity:0 }
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 80px rgba(194,65,12,0.15), 0 8px 20px rgba(245,158,11,0.06);
+  border:1px solid rgba(245,158,11,0.14);
+}
+.card:hover::after{ transform:scaleX(1); opacity:1 }
+
+
+.rating {
+  color: #fbbf24;
+}
+
+/* AI Chat Styles */
+.ai-chat {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.ai-header {
+  background: #4f46e5;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-body {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.ai-message {
+  margin: 5px 0;
+  padding: 7px 10px;
+  border-radius: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.bot {
+  background: #eef1ff;
+  text-align: left;
+}
+
+.user {
+  background: #4f46e5;
+  color: white;
+  text-align: right;
+  margin-left: auto;
+}
+
+.ai-footer {
+  display: flex;
+  padding: 5px;
+  border-top: 1px solid #ddd;
+}
+
+.ai-footer input {
+  flex: 1;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.ai-footer button {
+  margin-left: 5px;
+}
